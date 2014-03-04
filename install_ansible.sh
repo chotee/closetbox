@@ -13,13 +13,16 @@ function failure {
 function send_cmd {
     local cmd=$1
     echo ">>> $cmd"
-    echo -n ">>> "
+    echo -n "<<< "
     ret=$(sshpass -e ssh root@$dest_host $cmd | tee /proc/self/fd/2) || failure
 }
 
 function do_preparation {
     do_login
     do_update_debian
+    do_install_auth
+#    create_sshkeys()
+    do_create_cb_updater
 }
 
 function do_login {
@@ -38,6 +41,21 @@ function do_update_debian {
     send_cmd "apt-get dist-upgrade --assume-yes"
 }
 
+function do_install_auth {
+    echo "----"
+    echo "Installing vector to control the server."
+    send_cmd "apt-get install openssh-server sudo"
+}
+
+function do_create_cb_updater {
+    send_cmd "id cb_updater || echo missing"
+    if [[ $ret == "missing" ]] ; then
+        send_cmd "sudo useradd -m cb_updater"
+        send_cmd 'echo "cb_updater ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/cb_updater'
+    else
+        echo "User cb_updater already exists. Skipping creation."
+    fi
+}
 
 if [[ $# == 1 ]]; then
     dest_host=$1;
