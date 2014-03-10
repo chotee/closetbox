@@ -1,0 +1,5 @@
+---
+# file: closetbox.yml
+- hosts: closetboxen
+  roles:
+    - { role: common, sudo: yes }
