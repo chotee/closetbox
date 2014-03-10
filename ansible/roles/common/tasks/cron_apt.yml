@@ -1,0 +1,5 @@
+- name: be sure cron-apt is installed
+  apt: pkg=cron-apt state=present update_cache=yes
+
+- name: setup upgrade of packages via cron-apt
+  copy: src=cron-apt_5-upgrade dest=/etc/cron-apt/action.d/5-upgrade 

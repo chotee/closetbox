@@ -1,24 +1,13 @@
 ---
-# file: roles/common/tasks/main.yml
-
-- name: be sure ntp is installed
-  apt: pkg={{ item }} state=present update_cache=yes
-  with_items:
-    - ntp
-    - ntpdate
-  tags: ntp
-
-- name: be sure ntp is configured
-  template: src=ntp.conf.j2 dest=/etc/ntp.conf
-  notify:
-    - restart ntpd
-  tags: ntp
-
-- name: be sure ntpd is running and enabled
-  service: name=ntp state=running enabled=yes
-  tags: ntp
-
+- include: ntp.yml
+- include: fail2ban.yml
+- include: cron_apt.yml
 
 # HARDEN
-# IP Tables
-# fail2ban
+
+##- include: file_integrity.yml
+##- include: firewall.yml
+##- include: callhome.yml
+
+# Privacy
+##- include: logrotate.yml

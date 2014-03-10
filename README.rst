@@ -19,6 +19,11 @@ Tools
 closetbox_bootstrap.sh: The Script closetbox_bootstrap.sh will ask for IP and root password, after which it will
 insert a "closetbox" use that has rights to maintain the machine. Access is done via SSH key authentication.
 
+Deploying
+---------
+
+To install a new closetbox, 
+$ ansible-playbook closetbox.yml -i testing_hosts
 
 Questions
 ---------

@@ -1,0 +1,7 @@
+- name: be sure fail2ban is installed
+  apt: pkg=fail2ban state=present update_cache=yes
+  tags: harden
+
+- name: be sure fail2ban is running and enabled
+  service: name=fail2ban state=running enabled=yes
+  tags: harden

@@ -1,4 +1,4 @@
 ---
-- hosts: closetboxen
+- hosts: postboxen
   roles:
     - { role: common, sudo: yes }
