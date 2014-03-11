@@ -2,3 +2,7 @@
 - hosts: closetboxen
   roles:
     - { role: common, sudo: yes }
+    #- { role: filestorage, sudo: yes }
+    #- { role: emailhost, sudo: yes }
+    #- { role: chat, sudo: yes }
+    #- { role: social, sudo: yes }

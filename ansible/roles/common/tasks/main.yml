@@ -4,10 +4,14 @@
 - include: cron_apt.yml
 
 # HARDEN
-
+##- include: beter_entropy.yml
+##- include: harden_sshd.yml
+##- include: portsentry.yml
 ##- include: file_integrity.yml
-##- include: firewall.yml
-##- include: callhome.yml
+##- include: harden_networking.yml
 
 # Privacy
 ##- include: logrotate.yml
+
+# Common services
+##- include: webserver.yml
