@@ -1,4 +1,5 @@
 ## Get and set good time values by using internet timeservices via the NTP protocol.
+---
 - name: be sure ntp is installed
   apt: pkg={{ item }} state=present update_cache=yes
   with_items:

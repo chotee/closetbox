@@ -1,5 +1,6 @@
 ## Fail2Ban blocks machines after they have tried (and failed) to login multiple times.
-## This stops bruteforce password checkers.
+## This stops bruteforce password cracking.
+---
 - name: be sure fail2ban is installed
   apt: pkg=fail2ban state=present update_cache=yes
   tags: harden

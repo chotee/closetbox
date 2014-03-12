@@ -2,7 +2,11 @@
 - hosts: closetboxen
   roles:
     - { role: common, sudo: yes }
-    #- { role: filestorage, sudo: yes }
+    - { role: harden, sudo: yes }
+    #- { role: privacy, sudo: yes }
+    - { role: webserver, sudo: yes }
+    #- { role: filehost, sudo: yes }
     #- { role: emailhost, sudo: yes }
-    #- { role: chat, sudo: yes }
-    #- { role: social, sudo: yes }
+    #- { role: chatserver, sudo: yes }
+    #- { role: socialmedia, sudo: yes }
+    #- { role: publishing, sudo: yes }

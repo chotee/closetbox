@@ -1,4 +1,5 @@
 ## Service to automatically update the installed software packages on the machine.
+---
 - name: be sure cron-apt is installed
   apt: pkg=cron-apt state=present update_cache=yes
   tags: base

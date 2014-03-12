@@ -1,6 +1,5 @@
 ## Install the lightweight nginx webserver.
-#- include: ssl_certificates.yml
-
+---
 - name: be sure nginx is installed
   apt: pkg=nginx state=present update_cache=yes
   tags: [nginx, http]

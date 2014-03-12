@@ -1,0 +1,10 @@
+---
+- include: haveged.yml
+- include: sshd.yml
+##- include: chkrootkit
+##- include: portsentry.yml
+##- include: file_integrity.yml
+##- include: harden_networking.yml
+
+# Privacy
+##- include: logrotate.yml

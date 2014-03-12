@@ -1,3 +1,5 @@
+## Use stronger defaults for SSH
+---
 - name: Change the configuration of the SSH server
   copy: src=sshd_config dest=/etc/ssh/sshd_config
   tags: ssh

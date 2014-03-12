@@ -1,18 +1,5 @@
+## changes common to all systems.
 ---
 - include: ntp.yml
-- include: entropy_haveged.yml
-- include: fail2ban.yml
 - include: cron_apt.yml
-
-# HARDEN
-- include: harden_ssh.yml
-##- include: chkrootkit
-##- include: portsentry.yml
-##- include: file_integrity.yml
-##- include: harden_networking.yml
-
-# Privacy
-##- include: logrotate.yml
-
-# Common services
-- include: nginx.yml
+- include: ssl_certificates.yml
