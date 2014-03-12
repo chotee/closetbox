@@ -1,10 +1,10 @@
 ---
 - include: ntp.yml
+- include: entropy_haveged.yml
 - include: fail2ban.yml
 - include: cron_apt.yml
 
 # HARDEN
-##- include: beter_entropy.yml
 ##- include: harden_sshd.yml
 ##- include: portsentry.yml
 ##- include: file_integrity.yml

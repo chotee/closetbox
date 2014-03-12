@@ -1,5 +1,8 @@
+## Service to automatically update the installed software packages on the machine.
 - name: be sure cron-apt is installed
   apt: pkg=cron-apt state=present update_cache=yes
+  tags: base
 
 - name: setup upgrade of packages via cron-apt
-  copy: src=cron-apt_5-upgrade dest=/etc/cron-apt/action.d/5-upgrade 
+  copy: src=cron-apt_5-upgrade dest=/etc/cron-apt/action.d/5-upgrade
+  tags: base

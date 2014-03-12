@@ -1,0 +1,8 @@
+## Haveged gathers more entropy from machine internals, creating more entropy for better key material.
+- name: be sure haveged is installed
+  apt: pkg=haveged state=present update_cache=yes
+  tags: harden
+
+- name: be sure haveged is running and enabled
+  service: name=haveged state=running enabled=yes
+  tags: harden
