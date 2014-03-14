@@ -1,0 +1,5 @@
+## Variables for the Nginx setup.
+---
+service_name: nginx
+ssl_key_file: /etc/ssl/private/nginx.key
+ssl_cert_file: /etc/ssl/certs/nginx.crt

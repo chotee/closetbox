@@ -1,0 +1,18 @@
+## Create public-private keyset with 4096bit RSA key, and the SHA256 signing algorithm.
+##
+## http://wiki.nginx.org/HttpSslModule
+## http://www.shellhacks.com/en/HowTo-Create-CSR-using-OpenSSL-Without-Prompt-Non-Interactive
+---
+- name: generate a public-private keypair
+  command: openssl req -nodes -newkey rsa:4096 -sha256 -keyout {{ssl_key_file}} -out {{service_name}}.csr -subj /C=/ST=/L=/O=Closetbox/OU=Certs/CN={{ansible_hostname}}.closetbox
+           creates={{ssl_cert_file}}
+  notify:
+    - restart {{service_name}}
+  tags: [ssl]
+
+- name: selfsign the keypair
+  command: openssl x509 -req -sha256 -days 365 -in {{service_name}}.csr -signkey {{ssl_key_file}} -out {{ssl_cert_file}}
+           creates={{ssl_cert_file}}
+  notify:
+    - restart {{service_name}}
+  tags: [ssl]

@@ -66,6 +66,7 @@ function do_create_closetbox_user {
         send_cmd 'echo "closetbox ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/closetbox'
         send_cmd "mkdir /home/closetbox/.ssh"
         send_file "$cb_keyfile_pub" "/home/closetbox/.ssh/authorized_keys"
+        send_cmd "chmod 700 /home/closetbox"
     else
         echo "User closetbox already exists. Skipping creation."
     fi
