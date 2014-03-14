@@ -1,0 +1,16 @@
+## Installs owncloud filehosting.
+---
+- name: add the owncloud apt key
+  apt_key: url="http://download.opensuse.org/repositories/isv:ownCloud:community/Debian_7.0/Release.key"
+           id=BA684223 state=present
+
+- name: add Owncloud repositories
+  # Using copy since apt_repository doesn't handle it correctly.
+  copy: src=owncloud.list dest=/etc/apt/sources.list.d/owncloud.list
+
+- name: get owncloud package and dependencies
+  apt: pkg={{item}} update_cache=yes
+  with_items:
+    - owncloud
+    - curl
+

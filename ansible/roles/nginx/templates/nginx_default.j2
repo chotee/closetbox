@@ -13,6 +13,7 @@
 # Please see /usr/share/doc/nginx-doc/examples/ for more detailed examples.
 ##
 
+# HTTP server only redirects to https.
 server {
     listen 80;
     listen [::]:80 ipv6only=on; # omit line if no ipv6
@@ -25,7 +26,8 @@ server {
 #
 server {
 	listen 443 default_server ssl;
-	listen   [::]:443 default_server ipv6only=on; ## listen for ipv6
+	listen   [::]:443 default_server ssl ipv6only=on; ## listen for ipv6
+    add_header Strict-Transport-Security max-age=15768000;
 
 	root /usr/share/nginx/www;
 	index index.html index.htm;
@@ -39,7 +41,7 @@ server {
 	ssl_prefer_server_ciphers on;
     keepalive_timeout    70;
 
-#	location / {
-#		try_files $uri $uri/ =404;
-#	}
+	location / {
+		try_files $uri $uri/ =404;
+	}
 }

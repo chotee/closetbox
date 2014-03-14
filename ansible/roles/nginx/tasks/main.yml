@@ -1,31 +1,25 @@
 ## Install the lightweight nginx webserver.
 ---
 - include: ssl_certificates.yml
-  tags: [nginx]
 
 - name: be sure nginx is installed
   apt: pkg=nginx state=present update_cache=yes
-  tags: [nginx, http]
 
 - name: remove server version identifcation from http responses.
   lineinfile: dest=/etc/nginx/nginx.conf
               regexp="^\s*# server_tokens" backrefs=yes line="server_tokens off;"
   notify:
     - restart nginx
-  tags: [nginx, http]
 
 - name: Copy nginx default website configuration file.
   template: src=nginx_default.j2 dest=/etc/nginx/sites-available/default
   notify:
     - restart nginx
-  tags: [nginx, http]
 
 - name: be sure nginx sites are enabled.
   file: state=link src=/etc/nginx/sites-available/default dest=/etc/nginx/sites-enabled/default
   notify:
     - restart nginx
-  tags: [nginx, http]
 
 - name: be sure nginx is running and enabled
   service: name=nginx state=running enabled=yes
-  tags: [nginx, http]
