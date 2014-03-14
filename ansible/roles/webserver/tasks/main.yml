@@ -7,7 +7,14 @@
   apt: pkg=nginx state=present update_cache=yes
   tags: [nginx, http]
 
-- name: Copy nginx configuration files.
+- name: remove server version identifcation from http responses.
+  lineinfile: dest=/etc/nginx/nginx.conf
+              regexp="^\s*# server_tokens" backrefs=yes line="server_tokens off;"
+  notify:
+    - restart nginx
+  tags: [nginx, http]
+
+- name: Copy nginx default website configuration file.
   template: src=nginx_default.j2 dest=/etc/nginx/sites-available/default
   notify:
     - restart nginx
