@@ -21,5 +21,14 @@
   notify:
     - restart nginx
 
+- name: add the siteroot configuration directory
+  file: dest=/etc/nginx/sites-available/default.d/ state=directory
+
+- name: add the siteroot configuration to nginx.
+  copy: src=00_siteroot.conf dest=/etc/nginx/sites-available/default.d/00_siteroot.conf
+        backup=yes
+  notify:
+    - restart nginx
+
 - name: be sure nginx is running and enabled
   service: name=nginx state=running enabled=yes

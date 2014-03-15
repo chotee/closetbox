@@ -5,8 +5,10 @@
     - { role: harden, sudo: yes }
     #- { role: privacy, sudo: yes }
     - { role: nginx, sudo: yes, tags:[nginx] }
+    #- { role: tor-hidden-services, sudo: yes, tags:[anonymity] }
     - { role: owncloud, sudo: yes, tags:[owncloud] }
     #- { role: emailhost, sudo: yes }
     #- { role: chatserver, sudo: yes }
     #- { role: socialmedia, sudo: yes }
     #- { role: publishing, sudo: yes }
+    #- { role: development, sudo: yes } ## This is to add some convenience when working on the closetbox configuration.

@@ -1,0 +1,10 @@
+---
+- name: install php5-fpm package
+  apt: pkg={{item}}
+  with_items:
+    - php5-fpm
+
+#- name: update php5-fpm configuration for owncloud
+#
+#  notify:
+#    - restart php5-fpm

@@ -1,0 +1,6 @@
+- name: get owncloud package and dependencies
+  apt: pkg={{item}} update_cache=yes
+  with_items:
+    - vim
+    - htop
+    - emacs23-nox
