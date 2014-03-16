@@ -1,5 +1,7 @@
 ---
-- hosts: localhost
+- name: Install the Closetbox software
+  hosts: 127.0.0.1
+  connection: local
   roles:
     - { role: common, sudo: yes, tags:[common] }
     - { role: harden, sudo: yes }

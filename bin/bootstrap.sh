@@ -86,10 +86,13 @@ function do_test_closetbox_user_access {
 }
 
 function do_install_ansible {
+    if [[ $git_repos == '' ]]; then
+        git_repos=https://github.com/chotee/closetbox.git
+    fi
     closet_cmd "sudo apt-get --yes install git python-pip python-dev python-virtualenv"
     closet_cmd "virtualenv pyenv"
     closet_cmd "pyenv/bin/pip install ansible"
-    closet_cmd "git clone https://github.com/chotee/closetbox.git closetbox"
+    closet_cmd "git clone $git_repos closetbox"
 }
 
 function do_install_closetbox {
@@ -135,4 +138,5 @@ function main {
 }
 
 dest_host=$1;
+git_repos=$2
 main;
