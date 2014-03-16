@@ -1,0 +1,28 @@
+#!/bin/bash
+
+CLOSETBOX_BASE=$(dirname $(which $0))/..
+
+function do_install_ansible {
+    python-pip python-dev python-virtualenv
+    virtualenv pyenv
+    pyenv/bin/pip install ansible
+}
+
+function do_install_closetbox {
+    closetbox/bin/closetbox-update
+}
+
+function do_install {
+    cd $CLOSETBOX_BASE
+
+    do_install_ansible
+    do_install_closetbox
+}
+
+function main {
+    echo "I will install the Closetbox on this machine."
+    echo "Various services will be rolled out on the machine."
+    do_install
+}
+
+main
