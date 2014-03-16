@@ -41,7 +41,7 @@ function do_installation {
     do_install_sudo
     do_create_closetbox_user
     do_get_code_repository
-    sudo -iu closetbox /home/closetbox/closetbox/bin/closetbox_install
+    sudo -iu closetbox bash /home/closetbox/closetbox/bin/closetbox_install
 }
 
 function main {

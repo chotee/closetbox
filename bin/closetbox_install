@@ -1,15 +1,15 @@
 #!/bin/bash
 
-CLOSETBOX_BASE=$(dirname $(which $0))/..
+CLOSETBOX_BASE=$HOME/closetbox
 
 function do_install_ansible {
-    python-pip python-dev python-virtualenv
-    virtualenv pyenv
-    pyenv/bin/pip install ansible
+    sudo apt-get install --yes python-pip python-dev python-virtualenv || exit 1
+    virtualenv pyenv || exit 1
+    pyenv/bin/pip install ansible || exit 1
 }
 
 function do_install_closetbox {
-    closetbox/bin/closetbox-update
+    bin/closetbox-update
 }
 
 function do_install {
