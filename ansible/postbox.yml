@@ -1,4 +1,0 @@
----
-- hosts: postboxen
-  roles:
-    - { role: common, sudo: yes }

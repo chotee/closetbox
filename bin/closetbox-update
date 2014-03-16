@@ -1,0 +1,8 @@
+#!/bin/bash
+
+playbook=$HOME/pyenv/bin/ansible-playbook
+
+cd $HOME/closetbox/ansible
+
+$playbook closetbox.yml
+

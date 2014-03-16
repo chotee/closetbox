@@ -1,5 +1,5 @@
 ---
-- hosts: closetboxen
+- hosts: localhost
   roles:
     - { role: common, sudo: yes, tags:[common] }
     - { role: harden, sudo: yes }

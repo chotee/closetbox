@@ -1,6 +1,7 @@
 #!/bin/bash
 
-KEY_MATERIAL='keys' # where to store the keys to the machines.
+CLOSETBOX_BASE=$(dirname $(which $0))/..
+KEY_MATERIAL=keys # where to store the keys to the machines.
 
 function failure {
     echo "Something unexpected happend";
@@ -52,8 +53,9 @@ function do_install_sudo {
 function create_sshkeys {
     cb_keyfile="${KEY_MATERIAL}/${cb_hostname}_ecdsa"
     cb_keyfile_pub="${cb_keyfile}.pub"
+    pwd
     if [ ! -e ${cb_keyfile} ]; then
-        ssh-keygen -t ecdsa -b 521 -N '' -C "${cb_hostname}@closetbox_maint" -f $cb_keyfile
+        ssh-keygen -t ecdsa -b 521 -N '' -C "${cb_hostname}@closetbox_maint" -f $cb_keyfile || failure
     else
         echo "A closetbox key already exists for this host. Reusing."
     fi
@@ -65,6 +67,7 @@ function do_create_closetbox_user {
         send_cmd "sudo useradd -m closetbox"
         send_cmd 'echo "closetbox ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/closetbox'
         send_cmd "mkdir /home/closetbox/.ssh"
+        send_cmd "mkdir /home/closetbox/bin"
         send_file "$cb_keyfile_pub" "/home/closetbox/.ssh/authorized_keys"
         send_cmd "chmod 700 /home/closetbox"
     else
@@ -83,9 +86,14 @@ function do_test_closetbox_user_access {
 }
 
 function do_install_ansible {
-    closet_cmd "sudo apt-get --yes install python-pip python-dev"
-    closet_cmd "sudo pip install ansible --no-allow-insecure"
-    closet
+    closet_cmd "sudo apt-get --yes install git python-pip python-dev python-virtualenv"
+    closet_cmd "virtualenv pyenv"
+    closet_cmd "pyenv/bin/pip install ansible"
+    closet_cmd "git clone https://github.com/chotee/closetbox.git closetbox"
+}
+
+function do_install_closetbox {
+    closet_cmd 'closetbox/bin/closetbox-update'
 }
 
 function do_preparation {
@@ -94,10 +102,12 @@ function do_preparation {
     create_sshkeys
     do_create_closetbox_user
     do_test_closetbox_user_access
-#    do_install_ansible
+    do_install_ansible
+    do_install_closetbox
 }
 
 function main {
+    cd $CLOSETBOX_BASE
     echo "Script that installs ansiable on a fresh debian Install and prepare access to roll out the closetbox services."
     echo "A user 'closetbox' will have been added that ansiable will operate through."
     echo "It will ask for the IP and root password."
