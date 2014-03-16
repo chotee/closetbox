@@ -1,7 +1,7 @@
 #!/bin/bash
 
-CLOSETBOX_BASE=$(dirname $(which $0))/..
-PYENV=$HOME/pyenv/
+CLOSETBOX_BASE=$HOME/closetbox/
+PYENV=$CLOSETBOX_BASE/pyenv/
 
 function update_ansible {
     $PYENV/bin/pip install ansible --upgrade
@@ -9,7 +9,6 @@ function update_ansible {
 
 function update_closetbox {
     playbook=$PYENV/bin/ansible-playbook
-    cd $HOME/closetbox
     git pull
     git checkout
     cd $HOME/closetbox/ansible
@@ -17,7 +16,7 @@ function update_closetbox {
 }
 
 function main() {
-    cd CLOSETBOX_BASE
+    cd $CLOSETBOX_BASE
     update_ansible
     update_closetbox
 }
