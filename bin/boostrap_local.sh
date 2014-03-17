@@ -52,6 +52,7 @@ function main {
         echo "I expected to be run as root. but I am run as $(id -un). ABORTING."
         exit 1
     fi
+    do_installation
 }
 
 git_repos=$1
