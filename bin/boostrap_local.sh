@@ -49,15 +49,9 @@ function main {
     echo "I will install the Closetbox on this machine."
     echo "This means a closetbox user will be installed and various services rolled out on the machine."
     if [[ $(id -u) != '0' ]]; then
-        echo "I expected to be run as root. but I am run as $(id -un). Aborting."
+        echo "I expected to be run as root. but I am run as $(id -un). ABORTING."
         exit 1
     fi
-    read -p "Are you sure? [y|n]: " yn
-    case $yn in
-        [Yy]* ) do_installation;;
-        [Nn]* ) echo "Aborted"; exit;;
-        * ) echo "Please answer yes or no.";;
-    esac
 }
 
 git_repos=$1
