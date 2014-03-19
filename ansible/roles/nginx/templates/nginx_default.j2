@@ -16,18 +16,21 @@
 # HTTP server only redirects to https.
 server {
     listen 80;
+    {% if ansible_all_ipv6_addresses != [] %}
     listen [::]:80 ipv6only=on; # omit line if no ipv6
+    {% endif %}
     charset utf-8;
-    # add_header Strict-Transport-Security max-age=15768000;
+    add_header Strict-Transport-Security max-age=15768000;
     return 301 https://$host$request_uri;
 }
 
 ## HTTPS server
-#
 server {
     listen 443 default_server ssl;
+    {% if ansible_all_ipv6_addresses != [] %}
     listen   [::]:443 default_server ssl ipv6only=on; ## listen for ipv6
-    # add_header Strict-Transport-Security max-age=15768000;
+    {% endif %}
+    add_header Strict-Transport-Security max-age=15768000;
 
     ssl_certificate /etc/ssl/certs/nginx.crt;
     ssl_certificate_key /etc/ssl/private/nginx.key;
