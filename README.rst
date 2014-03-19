@@ -16,7 +16,7 @@ Deploying
 ---------
 
 To install a new closetbox, on the closetbox itself be *root* and do:
-wget -qO - https://raw.github.com/chotee/closetbox/master/bin/boostrap_local.sh | bash
+wget -qO - https://raw.github.com/chotee/closetbox/master/bin/bootstrap_local.sh | bash
 - or to save typing -
 wget -qO - http://tinyurl.com/closetbox-bs | bash
 
