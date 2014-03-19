@@ -3,7 +3,7 @@
 CLOSETBOX_BASE=$HOME/closetbox
 
 function do_install_ansible {
-    sudo apt-get install --yes python-pip python-dev python-virtualenv || exit 1
+    sudo apt-get install --yes python-pip python-dev python-virtualenv python-apt || exit 1
     virtualenv pyenv || exit 1
     pyenv/bin/pip install ansible || exit 1
 }
