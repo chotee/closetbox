@@ -2,8 +2,3 @@
 ---
 - include: ntp.yml
 - include: cron_apt.yml
-
-- name: Install extra packages needed for anisable
-  apt: pkg={{item}} state=present
-  with_items:
-    - python-pycurl
