@@ -9,12 +9,11 @@ function do_install_ansible {
 }
 
 function do_install_closetbox {
-    bin/closetbox-update
+    bin/closetbox_clearupdate
 }
 
 function do_install {
     cd $CLOSETBOX_BASE
-
     do_install_ansible
     do_install_closetbox
 }

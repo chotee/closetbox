@@ -9,6 +9,7 @@ function failure {
 }
 
 function send_cmd {
+    # Send a command as root.
     local cmd=$1
     echo ">>> $cmd"
     echo -n "<<< "
@@ -17,6 +18,7 @@ function send_cmd {
 }
 
 function closet_cmd {
+    # Send command as the closetbox administrative user.
     local cmd=$1
     echo ">>> $cmd"
     echo -n "<<< "
@@ -25,6 +27,7 @@ function closet_cmd {
 }
 
 function send_file {
+    # send the file $1 to the machine being installed storing it as $2.
     local src_location=$1
     local dest_location=$2
     echo "Remote copy '${src_location}' to '${dest_location}'"
@@ -32,7 +35,8 @@ function send_file {
     echo "Copied."
 }
 
-function do_login {
+function get_remote_hostname {
+    # Test the connection to the machine and check that we have elevated rights.
     echo "----"
     echo "Testing login works and has elevated rights."
     send_cmd "id -u"
@@ -44,16 +48,11 @@ function do_login {
     echo "Closetbox hostname is '${cb_hostname}'"
 }
 
-function do_install_sudo {
-    echo "----"
-    echo "Installing vector to control the server."
-    send_cmd "apt-get install sudo"
-}
-
-function create_sshkeys {
+function create_admin_sshkeys {
+    # Create a administrative keypair that will be used to gain access to the machine in the future
+    # one keypair per machine.
     cb_keyfile="${KEY_MATERIAL}/${cb_hostname}_ecdsa"
     cb_keyfile_pub="${cb_keyfile}.pub"
-    pwd
     if [ ! -e ${cb_keyfile} ]; then
         ssh-keygen -t ecdsa -b 521 -N '' -C "${cb_hostname}@closetbox_maint" -f $cb_keyfile || failure
     else
@@ -61,21 +60,19 @@ function create_sshkeys {
     fi
 }
 
-function do_create_closetbox_user {
-    send_cmd "id closetbox || echo missing"
-    if [[ $ret == "missing" ]] ; then
-        send_cmd "sudo useradd -m closetbox"
-        send_cmd 'echo "closetbox ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/closetbox'
-        send_cmd "mkdir /home/closetbox/.ssh"
-        send_cmd "mkdir /home/closetbox/bin"
-        send_file "$cb_keyfile_pub" "/home/closetbox/.ssh/authorized_keys"
-        send_cmd "chmod 700 /home/closetbox"
-    else
-        echo "User closetbox already exists. Skipping creation."
-    fi
+function send_admin_sshkeys {
+    send_file $cb_keyfile_pub "/root/closetbox_ssh_admin_access.pub" || failure
 }
 
-function do_test_closetbox_user_access {
+function prepare_closetbox {
+    send_file bin/bootstrap_local.sh "/root/closetbox_bootstrap_local.sh" || failure
+    if [[ -z $code_repos ]]; then
+        code_repos='default'
+    fi
+    send_cmd "bash /root/closetbox_bootstrap_local.sh $code_repos no_install" || failure
+}
+
+function test_closetbox_user_access {
     closet_cmd 'id -u' # Can login
     closet_cmd 'sudo id -u' # can sudo successfully
     if [[ $ret == 0 ]]; then
@@ -85,33 +82,26 @@ function do_test_closetbox_user_access {
     fi
 }
 
-function do_install_ansible {
-    if [[ $git_repos == '' ]]; then
-        git_repos=https://github.com/chotee/closetbox.git
-    fi
-    closet_cmd "sudo apt-get --yes install git python-pip python-dev python-virtualenv"
-    closet_cmd "virtualenv pyenv"
-    closet_cmd "pyenv/bin/pip install ansible"
-    closet_cmd "git clone $git_repos closetbox"
+function install_closetbox {
+    closet_cmd 'bash /home/closetbox/closetbox/bin/closetbox_install'
 }
 
-function do_install_closetbox {
-    closet_cmd 'closetbox/bin/closetbox-update'
-}
 
 function do_preparation {
-    do_login
-    do_install_sudo
-    create_sshkeys
-    do_create_closetbox_user
-    do_test_closetbox_user_access
-    do_install_ansible
-    do_install_closetbox
+    get_remote_hostname
+    create_admin_sshkeys
+    send_admin_sshkeys
+    prepare_closetbox
+    test_closetbox_user_access
+    install_closetbox
+#    do_gpg_get_keys
+#    do_add_backup_policies
 }
 
 function main {
+    # Fix the working directory to a known location.
     cd $CLOSETBOX_BASE
-    echo "Script that installs ansiable on a fresh debian Install and prepare access to roll out the closetbox services."
+    echo "Script that installs ansiable on a fresh Debian install and prepare access to roll out the closetbox services."
     echo "A user 'closetbox' will have been added that ansiable will operate through."
     echo "It will ask for the IP and root password."
     echo "----"
@@ -138,5 +128,5 @@ function main {
 }
 
 dest_host=$1;
-git_repos=$2
+code_repos=$2
 main;
