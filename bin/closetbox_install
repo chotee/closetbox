@@ -9,7 +9,7 @@ function do_install_ansible {
 }
 
 function do_install_closetbox {
-    bin/closetbox_clearupdate
+    bin/closetbox_update
 }
 
 function do_install {
