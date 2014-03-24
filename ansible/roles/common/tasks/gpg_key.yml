@@ -1,0 +1,30 @@
+## Create a gpg key for this closetbox installation.
+# It's default installed by Debian, so no need to install/get it.
+---
+- name: Copy the gpg configuration key creation file
+  template: src=gpg_keygen.conf dest=/home/closetbox/gpg_keygen.conf mode=600
+  sudo: no
+  tags: gnupg
+
+- name: Create gpg keypair.
+  command: gpg --batch --gen-key /home/closetbox/gpg_keygen.conf
+    creates=/home/closetbox/.gnupg/pubring.gpg
+  sudo: no
+  tags: gnupg
+
+- name: Copy the GPG configuration
+  copy: src=gpg.conf dest=/home/closetbox/.gnupg/gpg.conf
+  sudo: no
+  tags: gnupg
+
+- name: Export the public key.
+  command: gpg --armour --output /home/closetbox/gpg_machine_key.pub --export {{ansible_hostname}}
+    creates=/home/closetbox/gpg_machine_key.pub
+  sudo: no
+  tags: gnupg
+
+- name: Publish the public key.
+  command: cp /home/closetbox/gpg_machine_key.pub /var/www/gpg_machine_key.pub
+    creates=/var/www/gpg_machine_key.pub
+  tags: gnupg
+
