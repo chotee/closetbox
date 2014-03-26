@@ -1,0 +1,6 @@
++ /home
++ /root
++ /var/spool
++ /var/mail
++ /var/www
++ /usr/local

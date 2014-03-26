@@ -1,0 +1,3 @@
+---
+- name: restart duplicity
+  assemble: src=/etc/duplicity/filelist.d/ dest=/etc/duplicity/filelist.txt

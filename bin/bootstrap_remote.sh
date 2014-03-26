@@ -3,6 +3,7 @@
 CLOSETBOX_BASE=$(dirname $(which $0))/..
 KEY_MATERIAL=keys # where to store the keys to the machines.
 
+
 function failure {
     echo "Something unexpected happend";
     exit 1

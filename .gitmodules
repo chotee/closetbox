@@ -1,0 +1,3 @@
+[submodule "contrib/duplicity-backup"]
+	path = contrib/duplicity-backup
+	url = https://github.com/zertrin/duplicity-backup.git

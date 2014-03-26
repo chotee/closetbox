@@ -1,11 +1,11 @@
 ---
 - name: Install the Closetbox software
-  hosts: 127.0.0.1
-  connection: local
+  hosts: all
   roles:
     - { role: common, sudo: yes, tags:[common] }
     - { role: harden, sudo: yes }
     #- { role: privacy, sudo: yes }
+    - { role: duplicity, sudo: yes, tags:[backup, duplicity] } # Create the backup client.
     - { role: nginx, sudo: yes, tags:[nginx] }
     #- { role: tor-hidden-services, sudo: yes, tags:[anonymity] }
     - { role: owncloud, sudo: yes, tags:[owncloud] }

@@ -1,0 +1,3 @@
+[general]
+## duplicity_backup_url=sftp://{{ansible_hostname}}@backups.openended.eu
+## duplicity_frequency_full=1M

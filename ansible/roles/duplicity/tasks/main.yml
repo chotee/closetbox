@@ -1,7 +1,21 @@
 ## Install duplicity backup client 
 ---
-# Assert GPG key is available
 # install duplicity
-# Configure duplicity
-# setup the backup frequency
+- name: ensure duplicity packages are installed.
+  apt: pkg=duplicity state=present
 
+- name: create place for duplicity-configration
+  file: dest=/etc/duplicity/filelist.d state=directory
+
+- name: Install duplicity backup script
+  copy: src=../contrib/duplicity-backup/duplicity-backup.sh dest=/usr/local/sbin/duplicity-backup.sh
+
+- name: copy duplicity configuration file.
+  template: src=duplicity-backup.conf dest=/etc/duplicity/duplicity-backup.conf
+
+- name: Add the standard directories to backup
+  copy: src=filelist_10_main.txt dest=/etc/duplicity/filelist.d/10_main.txt
+  notify:
+    - restart duplicity
+
+# setup the backup frequency

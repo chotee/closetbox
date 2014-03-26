@@ -1,5 +1,6 @@
 ## Create a gpg key for this closetbox installation.
 # It's default installed by Debian, so no need to install/get it.
+# http://www.gnupg.org/documentation/manuals/gnupg-devel/Unattended-GPG-key-generation.html
 ---
 - name: Copy the gpg configuration key creation file
   template: src=gpg_keygen.conf dest=/home/closetbox/gpg_keygen.conf mode=600
@@ -21,6 +22,16 @@
   command: gpg --armour --output /home/closetbox/gpg_machine_key.pub --export {{ansible_hostname}}
     creates=/home/closetbox/gpg_machine_key.pub
   sudo: no
+  tags: gnupg
+
+- name: Register gpg KeyId as an ansible variable
+  shell: gpg --list-keys {{ansible_hostname}} --textmode | head -1 | cut -c 13-30
+  sudo: no
+  register: gnupg_machine_keyid_discovered
+  tags: gnupg
+
+- name: Store gpg KeyId in a localfact
+  template: src=gnupg.fact dest=/etc/ansible/facts.d/gnupg.fact
   tags: gnupg
 
 - name: Publish the public key.

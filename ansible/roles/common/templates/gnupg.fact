@@ -1,0 +1,2 @@
+[general]
+gnupg_machine_keyid={{gnupg_machine_keyid_discovered.stdout_lines.0}}
