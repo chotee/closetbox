@@ -3,30 +3,25 @@
 # http://www.gnupg.org/documentation/manuals/gnupg-devel/Unattended-GPG-key-generation.html
 ---
 - name: Copy the gpg configuration key creation file
-  template: src=gpg_keygen.conf dest=/home/closetbox/gpg_keygen.conf mode=600
-  sudo: no
+  template: src=gpg_keygen.conf dest=/root/gpg_keygen.conf mode=600
   tags: gnupg
 
 - name: Create gpg keypair.
   command: gpg --batch --gen-key /home/closetbox/gpg_keygen.conf
-    creates=/home/closetbox/.gnupg/pubring.gpg
-  sudo: no
+    creates=/root/.gnupg/pubring.gpg
   tags: gnupg
 
 - name: Copy the GPG configuration
-  copy: src=gpg.conf dest=/home/closetbox/.gnupg/gpg.conf
-  sudo: no
+  copy: src=gpg.conf dest=/root/.gnupg/gpg.conf
   tags: gnupg
 
 - name: Export the public key.
-  command: gpg --armour --output /home/closetbox/gpg_machine_key.pub --export {{ansible_hostname}}
-    creates=/home/closetbox/gpg_machine_key.pub
-  sudo: no
+  command: gpg --armour --output /root/gpg_machine_key.pub --export {{ansible_hostname}}
+    creates=/root/gpg_machine_key.pub
   tags: gnupg
 
 - name: Register gpg KeyId as an ansible variable
   shell: gpg --list-keys {{ansible_hostname}} --textmode | head -1 | cut -c 13-30
-  sudo: no
   register: gnupg_machine_keyid_discovered
   tags: gnupg
 
@@ -35,7 +30,7 @@
   tags: gnupg
 
 - name: Publish the public key.
-  command: cp /home/closetbox/gpg_machine_key.pub /var/www/gpg_machine_key.pub
+  command: cp /root/gpg_machine_key.pub /var/www/gpg_machine_key.pub
     creates=/var/www/gpg_machine_key.pub
   tags: gnupg
 
