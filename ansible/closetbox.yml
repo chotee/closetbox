@@ -1,6 +1,8 @@
 ---
 - name: Install the Closetbox software
   hosts: all
+  vars_files:
+    - ../settings.yml
   roles:
     - { role: common, sudo: yes, tags:[common] }
     - { role: harden, sudo: yes }

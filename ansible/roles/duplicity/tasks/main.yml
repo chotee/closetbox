@@ -15,7 +15,14 @@
 
 - name: Add the standard directories to backup
   copy: src=filelist_10_main.txt dest=/etc/duplicity/filelist.d/10_main.txt
-  notify:
-    - restart duplicity
+# This should work, but doesn't.
+#  notify: 
+#    - restart duplicity
 
-# setup the backup frequency
+- name: Create the list of files to backup. 
+  assemble: src=/etc/duplicity/filelist.d/ dest=/etc/duplicity/filelist.txt
+
+- name: setup the backup frequency
+  cron: name="backup with duplicity" special_time=daily
+    job="duplicity-backup.sh -c /etc/duplicity/duplicity-backup.conf -b"
+
