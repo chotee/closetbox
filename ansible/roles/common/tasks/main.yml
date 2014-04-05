@@ -6,4 +6,4 @@
 - include: ntp.yml
 - include: cron_apt.yml
 - include: gpg_key.yml
-
+- include: ssh_identity.yml

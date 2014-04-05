@@ -1,0 +1,6 @@
+## Create a SSH Identity file for root.
+---
+- name: generate SSH user key for root
+  command: ssh-keygen -t ecdsa -b 521 -N '' -f /root/.ssh/id_ecdsa
+    creates=/root/.ssh/id_ecdsa
+  tags: ssh-key
