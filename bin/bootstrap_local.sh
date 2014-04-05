@@ -51,6 +51,7 @@ function do_get_code_repository {
         echo "Cloning $code_repos in $(pwd)"
         sudo -iu closetbox git clone $code_repos closetbox
         ( cd /home/closetbox/closetbox;
+          sudo -u closetbox git submodule init;
           sudo -u closetbox git submodule update )
     else
         echo "Updating existing clone of $code_repos in $(pwd)"
