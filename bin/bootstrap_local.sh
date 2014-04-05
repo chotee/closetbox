@@ -50,9 +50,13 @@ function do_get_code_repository {
     if [[ ! -e /home/closetbox/closetbox ]]; then
         echo "Cloning $code_repos in $(pwd)"
         sudo -iu closetbox git clone $code_repos closetbox
+        ( cd /home/closetbox/closetbox;
+          sudo -u closetbox git submodule update )
     else
         echo "Updating existing clone of $code_repos in $(pwd)"
-        ( cd /home/closetbox/closetbox; sudo -u closetbox git checkout )
+        ( cd /home/closetbox/closetbox;
+          sudo -u closetbox git checkout;
+          sudo -u closetbox git submodule update )
     fi
 }
 
