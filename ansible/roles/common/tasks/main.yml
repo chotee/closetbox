@@ -3,6 +3,7 @@
 - name: Directory to store local facts
   file: path=/etc/ansible/facts.d state=directory
 
+- include: haveged.yml # Start collecting entropy as soon as we can.
 - include: ntp.yml
 - include: cron_apt.yml
 - include: gpg_key.yml

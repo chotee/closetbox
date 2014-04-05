@@ -1,5 +1,4 @@
 ---
-- include: haveged.yml
 - include: sshd.yml
 ##- include: chkrootkit
 ##- include: portsentry.yml
