@@ -15,11 +15,13 @@ fi
 
 
 function do_update_packagelist {
-    apt-get update
+    ## Make sure we have the latest packages.
+    apt-get update || exit 1
 }
 
 function do_install_dependencies {
-    apt-get install --yes sudo git
+    ## Install packages that we depend upon for this bootstrapping
+    apt-get install --yes sudo git || exit 1
 
 }
 
@@ -62,10 +64,12 @@ function do_get_code_repository {
 }
 
 function do_copy_configuration_file {
+    ## Put the configuration file in its location for the rest of the installation.
     cp -v $configuration_file closetbox/settings.ini
 }
 
 function do_bootstrap {
+    ## The main installation routine.
     cd $CLOSETBOX_BASE
     do_update_packagelist
     do_install_dependencies
@@ -87,4 +91,5 @@ function main {
 
 code_repos=$1
 configuration_file=$2
+
 main

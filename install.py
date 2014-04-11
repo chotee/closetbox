@@ -22,7 +22,7 @@ def main():
     config_file = get_template()
     config = edit_template(config_file)
     start_bootstrap(config_file, config)
-#    kickoff_installation()
+    kickoff_installation()
 
 def introduction():
     print """\nHi there,
@@ -103,9 +103,9 @@ def start_bootstrap(conf_file, config):
     call(cmd)
 
 def kickoff_installation():
-#    sudo -iu closetbox bash /home/closetbox/closetbox/bin/closetbox_install
-    pass
-
+    cmd = 'sudo -iu closetbox bash /home/closetbox/closetbox/bin/closetbox_install.sh'.split()
+    log.debug(cmd)
+    call(cmd)
 
 def die(msg=None):
     """I get called when something went wrong and we need to exit."""
