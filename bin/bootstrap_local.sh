@@ -61,22 +61,18 @@ function do_get_code_repository {
     fi
 }
 
-function do_install_closetbox {
-    if [[ $cmd_options == "no_install" ]]; then
-        echo "Option was no_install, so skipping installation."
-        return
-    fi
-    sudo -iu closetbox bash /home/closetbox/closetbox/bin/closetbox_install
+function do_copy_configuration_file {
+    cp -v $configuration_file closetbox/settings.ini
 }
 
-function do_installation {
+function do_bootstrap {
     cd $CLOSETBOX_BASE
     do_update_packagelist
     do_install_dependencies
     do_create_closetbox_user
     cd $CLOSETBOX_HOME
     do_get_code_repository
-    do_install_closetbox
+    do_copy_configuration_file
 }
 
 function main {
@@ -86,9 +82,9 @@ function main {
         echo "I expected to be run as root. but I am run as $(id -un). ABORTING."
         exit 1
     fi
-    do_installation
+    do_bootstrap
 }
 
 code_repos=$1
-cmd_options=$2
+configuration_file=$2
 main
