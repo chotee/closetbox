@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-TEMPLATE_URL="https://raw.githubusercontent.com/chotee/closetbox/master/bin/bootstrap_local.sh"
+TEMPLATE_URL="https://raw.githubusercontent.com/chotee/closetbox/master/settings_template.ini"
 
 import os, sys
 import tempfile
@@ -21,11 +21,11 @@ def main():
     run_as_root()
     config_file = get_template()
     config = edit_template(config_file)
-    start_bootstrap(config)
+    start_bootstrap(config_file, config)
 #    kickoff_installation()
 
 def introduction():
-    print """Hi there,
+    print """\nHi there,
 I will start the installation of Closetbox on this machine.
 Before we can get to the installation however, I will need to know a few
 extra things. That's why I will start an editor with a default template.
@@ -47,7 +47,8 @@ def parse_cmdline():
     (CmdLineConfig, args) = parser.parse_args()
     if CmdLineConfig.verbose:
         log.setLevel(logging.DEBUG)
-    log.info("Assuming 'yes' to all questions.")
+    if CmdLineConfig.yes:
+        log.info("Assuming 'yes' to all questions.")
 
 def run_as_root():
     """Check if the process is being run as root and stop otherwise."""
@@ -85,7 +86,8 @@ def edit_template(conf_file):
         return
     call(['editor', conf_file])
     try:
-        config = SafeConfigParser().read(conf_file)
+        config = SafeConfigParser()
+        config.read(conf_file)
     except ConfigParserError, ex:
         log.error("Something seems to be wrong with the configuration file\n%s\nPlease correct it first.", ex)
         raw_input("Press enter to return to the editor.")
@@ -95,8 +97,10 @@ def edit_template(conf_file):
 def start_bootstrap(conf_file, config):
     bootstrap_url = config.get('bootstrap', 'script_url')
     repository_url = config.get('bootstrap', 'repository_url')
-    obtain_file(bootstrap_url)
-    call(['bootstrap',  repository_url, conf_file])
+    bootstrap_script = obtain_file(bootstrap_url)
+    cmd = ['bash', bootstrap_script,  repository_url, os.path.abspath(conf_file)]
+    log.debug(cmd)
+    call(cmd)
 
 def kickoff_installation():
 #    sudo -iu closetbox bash /home/closetbox/closetbox/bin/closetbox_install
