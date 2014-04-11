@@ -9,7 +9,7 @@
     #- { role: privacy, sudo: yes }
     - { role: duplicity, sudo: yes, tags:[backup, duplicity] } # Create the backup client.
     - { role: nginx, sudo: yes, tags:[nginx] }
-    #- { role: tor-hidden-services, sudo: yes, tags:[anonymity] }
+    - { role: tor-service, sudo: yes, tags:[anonymity, tor-service] }
     - { role: owncloud, sudo: yes, tags:[owncloud] }
     #- { role: emailhost, sudo: yes }
     #- { role: chatserver, sudo: yes }

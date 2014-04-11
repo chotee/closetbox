@@ -1,0 +1,18 @@
+## Install and start TOR client and create a Tor-service for accessing the https service.
+---
+- name: Add Tor repository key.
+  apt_key: id=886DDD89 file={{ansible_env.PWD}}/closetbox/ansible/roles/tor-service/files/deb.torproject.org.key state=present
+
+- name: Add Tor APT repository
+  apt_repository: repo="deb http://deb.torproject.org/torproject.org {{ansible_distribution_release}} main" update_cache=yes
+
+- name: Install Tor
+  apt: pkg={{item}} state=present
+  with_items:
+    - deb.torproject.org-keyring
+    - tor
+
+- name: Change the tor configuration.
+  copy: src=torrc dest=/etc/tor/torrc
+  notify:
+  - restart tor
