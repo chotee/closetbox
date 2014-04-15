@@ -8,7 +8,7 @@
   file: dest=/etc/duplicity/filelist.d state=directory
 
 - name: Install duplicity backup script
-  copy: src=../contrib/duplicity-backup/duplicity-backup.sh dest=/usr/local/sbin/duplicity-backup.sh
+  copy: src=../contrib/duplicity-backup/duplicity-backup.sh dest=/usr/local/sbin/duplicity-backup.sh mode=0755
 
 - name: copy duplicity configuration file.
   template: src=duplicity-backup.conf dest=/etc/duplicity/duplicity-backup.conf
