@@ -10,6 +10,10 @@
 - name: Install duplicity backup script
   copy: src=../contrib/duplicity-backup/duplicity-backup.sh dest=/usr/local/sbin/duplicity-backup.sh mode=0755
 
+- name: discover the short gpg KeyId for backup encryption.
+  shell: gpg --list-keys {{ansible_hostname}} --textmode | head -1 | cut -c 23-30
+  register: duplicity_gnupg_keyid_short
+
 - name: copy duplicity configuration file.
   template: src=duplicity-backup.conf dest=/etc/duplicity/duplicity-backup.conf
 

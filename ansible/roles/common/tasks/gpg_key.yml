@@ -20,20 +20,6 @@
     creates=/root/gpg_machine_key.pub
   tags: gnupg
 
-- name: Register long gpg KeyId as an ansible variable
-  shell: gpg --list-keys {{ansible_hostname}} --textmode | head -1 | cut -c 13-30
-  register: gnupg_machine_keyid_discovered
-  tags: gnupg
-
-- name: Register the short gpg KeyId as an ansible variable
-  shell: gpg --list-keys {{ansible_hostname}} --textmode | head -1 | cut -c 23-30
-  register: gnupg_machine_keyid_discovered_short
-  tags: gnupg
-
-- name: Store gpg KeyId in a localfact
-  template: src=gnupg.fact dest=/etc/ansible/facts.d/gnupg.fact
-  tags: gnupg
-
 - name: Publish the public key.
   command: cp /root/gpg_machine_key.pub /var/www/gpg_machine_key.pub
     creates=/var/www/gpg_machine_key.pub
